@@ -7,6 +7,11 @@ from .database import engine
 from . import models
 # Routes imports
 from .routers import post, user, auth, vote
+import sys, asyncio
+
+# Quickfix for ValueError: set_wakeup_fd only works in main thread
+if sys.platform=="win32" and (3,8,0) <= sys.version_info < (3,9,0):
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 #  Creating tables from models (NOW WE USE ALEMBIC)
 # models.Base.metadata.create_all(bind=engine)
