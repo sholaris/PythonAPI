@@ -37,7 +37,6 @@ def client(session):
 
 @pytest.fixture
 def test_user(client):
-    # Dependency function that create and return new user
     user_data = {
         "email": "test_user@gmail.com", 
         "password": "password123"
@@ -51,7 +50,6 @@ def test_user(client):
 
 @pytest.fixture
 def test_user_second(client):
-    # Dependency function that create and return new user
     user_data = {
         "email": "test_user2@gmail.com", 
         "password": "password321"
@@ -111,4 +109,10 @@ def create_posts(test_user, test_user_second, session):
     session.commit()
     
     return session.query(models.Post).all()
+
+@pytest.fixture()
+def create_vote(session, test_user, create_posts):
+    new_vote = models.Vote(post_id = create_posts[1].id, user_id = test_user['id'])
+    session.add(new_vote)
+    session.commit()
 
